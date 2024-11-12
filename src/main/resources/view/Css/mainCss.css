@@ -1,0 +1,65 @@
+ .main-pane {
+        -fx-background-color: linear-gradient(to bottom, white, whitesmoke);
+ }
+ mainPanel {
+     -fx-background-color: linear-gradient(to bottom, white, darkred);
+ }
+
+ .menuBtn {
+     -fx-text-alignment: center;
+ }
+
+ /* General TableView styling */
+ .table-view {
+     -fx-background-color: white;           /* Table background color */
+     -fx-border-color: #dcdcdc;             /* Light grey border */
+     -fx-border-width: 1px;
+     -fx-table-cell-border-color: #dcdcdc;  /* Cell border color */
+ }
+
+ /* Header styling */
+ .table-view .column-header {
+     -fx-background-color:  #003049; /* Green header background */
+     -fx-padding: 30 0 30 0
+ }
+
+ .table-view .column-header .label {
+     -fx-text-fill: white;                  /* Header text color */
+     -fx-font-weight: bold;
+     -fx-padding: 5;
+ }
+
+ /* Styling for all cells */
+ .table-view .table-cell {
+     -fx-alignment: CENTER;                 /* Center align cell content */
+     -fx-text-fill: #000000;
+     -fx-background-color: #b3d2ff;
+     -fx-font-size: 11px;
+ }
+.desc {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+ /*!* Specific column styles based on fx:id *!*/
+ /*#idColumn{*/
+ /*    -fx-background-color: #f4f4f4;*/
+ /*    !* Light grey background for ID column cells *!*/
+ /*}*/
+
+ /*#nameColumn {*/
+ /*    -fx-background-color: #f4f4f4;*/
+ /*    !* Light green background for Name column cells *!*/
+ /*}*/
+
+ /*#weightColumn{*/
+ /*    -fx-background-color: #f4f4f4;*/
+ /*    !* Light red background for Weight column cells *!*/
+ /*}*/
+
+ /*#expireDateColumn{*/
+ /*    -fx-background-color: #f4f4f4;*/
+ /*    !* Light blue background for ExpireDate column cells *!*/
+ /*}*/
+
+
+
+ /* Buttons */
