@@ -33,12 +33,12 @@ public class LoginController implements Initializable {
             String userName = userNameTF.getText();
             String password = passwordTF.getText();
             UserDto dto = new UserDto(userName, password);
-            boolean isOK = loginModel.login(dto);
-            if (isOK) {
+            boolean isOK = loginModel.login(dto); //Check if is correct
+            if (isOK) { // if True immediately Redirect to mainLayoutFXML
                 Stage stage = new Stage();
                 Parent root = FXMLLoader.load(getClass().getResource("/view/homePage/mainLayout.fxml"));
                 Scene scene = new Scene(root , 1200 , 750);
-                stage.setResizable(false);
+                stage.setResizable(false); //Cannot resize
                 scene.getStylesheets().add(getClass().getResource("/view/Css/mainCss.css").toExternalForm());
                 stage.setScene(scene);
                 stage.show();

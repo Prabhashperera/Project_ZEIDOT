@@ -14,17 +14,14 @@ public class LoginModel {
         PreparedStatement statement = connection.prepareStatement("select * from user where username = ? and password = ?");
         statement.setString(1, userDto.getUsername());
         statement.setString(2, userDto.getPassword());
-        ResultSet resultSet = statement.executeQuery();
-        UserDto dto = new UserDto();
+        ResultSet resultSet = statement.executeQuery(); //Get all the users into a resultSet
         while (resultSet.next()) {
             String username = resultSet.getString("userName");
             String password = resultSet.getString("password");
             if (username.equals(userDto.getUsername()) && password.equals(userDto.getPassword())) {
-                dto.setUsername(username);
-                dto.setPassword(password);
-                return true;
+                return true; //if Username & Password is Equal to any user in the database, returns True
             }
         }
-        return false;
+        return false; //If not Returns False
     }
 }

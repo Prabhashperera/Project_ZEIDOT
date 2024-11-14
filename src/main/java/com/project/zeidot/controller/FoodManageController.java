@@ -35,18 +35,19 @@ import java.util.ResourceBundle;
 
 public class FoodManageController implements Initializable {
     public AnchorPane mainAnchor;
-    public Button detailsBtn;
-    public TextField foodNameTF;
-    public TextField foodWeightTF;
-    public Label foodIDTF;
-    public MenuButton menuButton;
-    public Label date;
-    public Label batchID;
-    @FXML
-    private Label currentTimeLabel;
-    LocalDateTime currentDateTime = LocalDateTime.now(); // this for database saving
 
-    //Food Table
+    public TextField foodNameTF; //Food Name
+    public TextField foodWeightTF; //Food Weight
+    public Label foodIDTF; //Food ID
+    public MenuButton menuButton; //Hours Selection Button
+    public Label date; // FoodBatch Date , Current Date
+    public Label batchID; //FoodBatch BatchID
+
+    @FXML
+    private Label currentTimeLabel;// Current Time showing Label - only for showing
+    LocalDateTime currentDateTime = LocalDateTime.now(); //Current Time - This is for database saving
+
+    //Food Table - Table Columns
     @FXML
     private TableColumn<FoodDto, String> idColumn;
     @FXML
@@ -57,8 +58,8 @@ public class FoodManageController implements Initializable {
     private TableColumn<FoodDto, String> expireDateColumn;
     @FXML
     private TableView<FoodDto> tableView;
-    //Food Table
-    //Batch Table
+    //Food Table End
+    //Batch Table Start
     @FXML
     private TableColumn<FoodBatchDto, String> FBId;
     @FXML
@@ -67,27 +68,32 @@ public class FoodManageController implements Initializable {
     private TableColumn<FoodBatchDto, String> addedDate;
     @FXML
     private TableView<FoodBatchDto> foodBatchTable;
-    // Batch Table
-    FoodManageModel foodManageModel = new FoodManageModel();
-    FoodBatchModel foodBatchModel = new FoodBatchModel();
+    // Batch Table End
+
+    FoodManageModel foodManageModel = new FoodManageModel(); // Food Manage Model Instance
+    FoodBatchModel foodBatchModel = new FoodBatchModel(); // Food Batch Model Instance
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        mainAnchor.getStyleClass().add("main-pane");
+        mainAnchor.getStyleClass().add("main-pane"); // Style Class Css
+        //Food Table Property Value Initialization Start--------------------------------
         idColumn.setCellValueFactory(new PropertyValueFactory<>("foodID"));
         weightColumn.setCellValueFactory(new PropertyValueFactory<>("weight"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("foodName"));
         expireDateColumn.setCellValueFactory(new PropertyValueFactory<>("duration"));
         currentTimeLabel.setText(currentDateTime.format(DateTimeFormatter.ofPattern("HH:mm")));
-        //batch table
+        //Food Table Property Value Initialization End----------------------------------
+
+        //Food Batch Table Property Value Initialization Start -------------------------
         FBId.setCellValueFactory(new PropertyValueFactory<>("foodBatchId"));
         amount.setCellValueFactory(new PropertyValueFactory<>("foodAmount"));
         addedDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+        //Food Batch Table Property Value Initialization Start -------------------------
         try {
-            batchID.setText(foodBatchModel.getCurrentBatchID());
-            realtimeThread();
-            refreshPage();
-            loadTableData();
+            batchID.setText(foodBatchModel.getCurrentBatchID()); // When Food Manage Loading Current Batch ID is Taking and Showing
+            realtimeThread(); // Realtime time Showing Method (This is a Thread)
+            refreshPage(); // Refresh Page Method
+            loadTableFood(); // Table Data Loading Method
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -99,23 +105,26 @@ public class FoodManageController implements Initializable {
             String foodID = foodIDTF.getText();
             String foodName = foodNameTF.getText();
             String foodWeight = foodWeightTF.getText();
+            //Adding Menu Button Current Value to The Current Time -- (CurrentTime + MenuButton Value)
             LocalDateTime newDateTime = currentDateTime.plusHours(Long.parseLong(menuButton.getText()));
+            // After adding Plus Hours, Formatting the time into HH:mm Format
             String foodDuration = newDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            FoodDto dto = new FoodDto(foodID, foodName, foodWeight, foodDuration);
+            FoodDto dto = new FoodDto(foodID, foodName, foodWeight, foodDuration); //F001 , Rice , 20.4 , CurrentTime + PlusHours
             boolean isSaved = foodManageModel.saveFood(dto);
             if (isSaved) {
-//                foodManageModel.batchDetailsAdd(foodID , batchID);
                 refreshPage();
                 new Alert(Alert.AlertType.INFORMATION, "Saved", ButtonType.OK).show();
+                //Pass foodID & CurrentBatch ID into BatchDetails DTO
                 BatchDetailsDto detailsDto = new BatchDetailsDto(foodID , batchID.getText());
+                //Now this is Going to Model that Adding Values to Associate Entity in Database (FoodBatchDetails Table)
                 boolean isAdded = foodBatchModel.setBatchDetailsValues(detailsDto);
                 if (isAdded) {
-                    System.out.println("add una");
-                    amountUpdate(foodWeight); // batch values tika add una gaman amount ekath wadi wenawa
+                    System.out.println("Batch Details Added : " + detailsDto.getFoodID() + ", " + detailsDto.getBatchId());
+                    amountUpdate(foodWeight); //If Food & Batch Detail Added Successfully, Must be Increase the Amount
                     refreshPage();
                 }
             } else {
-                new Alert(Alert.AlertType.ERROR, "Error", ButtonType.OK).show();
+                new Alert(Alert.AlertType.ERROR, "Cannot Saved!!", ButtonType.OK).show();
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -125,7 +134,7 @@ public class FoodManageController implements Initializable {
     public void refreshPage() throws SQLException {
         loadNextCustomerId();
         currentDate();
-        loadTableData();
+        loadTableFood();
         loadFoodBatchTable();
         foodNameTF.setText("");
         foodWeightTF.setText("");
@@ -136,30 +145,26 @@ public class FoodManageController implements Initializable {
         String nextFoodId = foodManageModel.getNextCustomerId();
         System.out.println(nextFoodId);
         foodIDTF.setText(nextFoodId);
-    }
+    } //Generating NextFoodID & set FoodID Text
 
     public void setHour(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
         menuButton.setText(menuItem.getText());
         System.out.println(menuButton.getText());
-    }
+    } //Menu Button Value set to the Menu Button text
 
-    private void loadTableData() throws SQLException {
-        ArrayList<FoodDto> customerDTOS = foodManageModel.getAllCustomers();
+    private void loadTableFood() throws SQLException {
+        //Load All FoodData From Model as An ArrayList<FoodDto> (Set of Food DTO Objects)
+        ArrayList<FoodDto> FoodsArrayList = foodManageModel.getAllCustomers();
+        //Creating Observable List for TableView
+        ObservableList<FoodDto> FoodObsList = FXCollections.observableArrayList();
 
-        ObservableList<FoodDto> FoodDTOS = FXCollections.observableArrayList();
-
-        for (FoodDto foodDto : customerDTOS) {
-            FoodDto foodTM = new FoodDto(
-                    foodDto.getFoodID(),
-                    foodDto.getWeight(),
-                    foodDto.getFoodName(),
-                    foodDto.getDuration()
-            );
-            FoodDTOS.add(foodTM);
+        for (FoodDto foodDto : FoodsArrayList) {
+            FoodDto foodTM = new FoodDto(foodDto.getFoodID(), foodDto.getWeight(), foodDto.getFoodName(), foodDto.getDuration());
+            FoodObsList.add(foodTM);
         }
 
-        tableView.setItems(FoodDTOS);
+        tableView.setItems(FoodObsList);
     }
 
     public void loadFoodBatchTable() throws SQLException {
@@ -172,7 +177,8 @@ public class FoodManageController implements Initializable {
                 FoodBatchDto batchTM = new FoodBatchDto(
                         batchDto.getFoodBatchId(),
                         batchDto.getFoodAmount(),
-                        batchDto.getDate()
+                        batchDto.getDate(),
+                        batchDto.getIsAvailable()
                 );
                 observableBatchDTOS.add(batchTM);
             }
@@ -186,8 +192,8 @@ public class FoodManageController implements Initializable {
     public void deleteOnAction(ActionEvent event) {
         try {
             FoodDto food = tableView.getSelectionModel().getSelectedItem();
-            String foodName = food.getFoodName();
-            boolean isDeleted = foodManageModel.deleteFood(foodName);
+            String foodID = food.getFoodID();
+            boolean isDeleted = foodManageModel.deleteFood(foodID);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Deleted", ButtonType.OK).show();
                 //After Deleting a Food emediately calling Decrease amount of the food batch
@@ -268,7 +274,7 @@ public class FoodManageController implements Initializable {
             String FbatchID = foodBatchModel.getCurrentBatchID();
             String nextBatchID = foodBatchModel.getNextBatchId();
             String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-            FoodBatchDto foodBatchDto = new FoodBatchDto(FbatchID , "0" , currentDate);
+            FoodBatchDto foodBatchDto = new FoodBatchDto(FbatchID , "0" , currentDate , "Available");
             boolean isSaved = Boolean.parseBoolean(foodBatchModel.setBatchValues(foodBatchDto));
             System.out.println(isSaved ? "save una" : "unnaha");
             batchID.setText(nextBatchID);

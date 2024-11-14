@@ -23,7 +23,7 @@ public class FoodManageModel {
     }
     public boolean deleteFood(String name) throws SQLException {
         Connection con = DBConnection.getInstance().getConnection();
-        PreparedStatement ps = con.prepareStatement("DELETE FROM food WHERE foodName = ?");
+        PreparedStatement ps = con.prepareStatement("DELETE FROM food WHERE foodID = ?");
         ps.setString(1, name);
         return ps.executeUpdate() > 0;
     }
@@ -109,15 +109,18 @@ public class FoodManageModel {
 
     public boolean decreaseAmount(double CurrentWeight , double foodWeight) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
-        String query = "UPDATE foodBatch SET FoodAmount = ? WHERE FBId = ?";
-        PreparedStatement ps = connection.prepareStatement(query);
-        double w = CurrentWeight - foodWeight;
-        String lastWeight = String.valueOf(w);
-        System.out.println(lastWeight);
-        ps.setString(1, lastWeight);
-        ps.setString(2 , getCurrentBatchID());
-        int rows = ps.executeUpdate();
-        return rows > 0;
+        if (CurrentWeight > 0) {
+            String query = "UPDATE foodBatch SET FoodAmount = ? WHERE FBId = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            double w = CurrentWeight - foodWeight;
+            String lastWeight = String.valueOf(w);
+            System.out.println(lastWeight);
+            ps.setString(1, lastWeight);
+            ps.setString(2, getCurrentBatchID());
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        }
+        return false;
     }
 
     public String getCurrentBatchID() throws SQLException {

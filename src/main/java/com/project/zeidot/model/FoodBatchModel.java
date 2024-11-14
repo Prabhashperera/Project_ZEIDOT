@@ -78,15 +78,15 @@ public class FoodBatchModel {
 
     public boolean setBatchDetailsValues(BatchDetailsDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
-        String query = "INSERT INTO foodBatchDetails VALUES (?, ?)";
+        String query = "INSERT INTO foodBatchDetails VALUES (?, ?)"; //Food ID & Current BatchID
         PreparedStatement ps = connection.prepareStatement(query);
 
         ps.setString(1, dto.getFoodID());
-        ps.setString(2, dto.getBatchId()); // Ensure this ID exists in foodBatch
+        ps.setString(2, dto.getBatchId());
 
         int rows = ps.executeUpdate();
         return rows > 0;
-    }
+    } //Set values for BatchDetails Associate Table
 
     public ArrayList<FoodBatchDto> getAllBatchDetails() throws SQLException {
         ResultSet rst = CrudUtil.execute("select * from foodBatch");
@@ -97,7 +97,8 @@ public class FoodBatchModel {
             FoodBatchDto foodBatchDto = new FoodBatchDto(
                     rst.getString(1),
                     rst.getString(2),
-                    rst.getString(3)
+                    rst.getString(3),
+                    rst.getString(4)
             );
             batchDtos.add(foodBatchDto);
         }

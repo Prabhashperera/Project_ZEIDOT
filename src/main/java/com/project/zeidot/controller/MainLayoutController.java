@@ -17,19 +17,24 @@ public class MainLayoutController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        middlePane.getChildren().clear();
-        AnchorPane load = null;
         try {
-            load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/homePage/homePage.fxml")));
+            middlePane.getChildren().clear(); //When Loading to the main Layout Immediately Navigate into Home Page
+            AnchorPane load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/homePage/homePage.fxml")));
+            middlePane.getChildren().add(load);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void foodManageOnAction(ActionEvent event) throws IOException { //Food Manage Navigation
+        middlePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/homePage/foodManage.fxml")));
         middlePane.getChildren().add(load);
     }
 
-    public void foodManageOnAction(ActionEvent event) throws IOException {
+    public void donationOnAction(ActionEvent event) throws IOException {
         middlePane.getChildren().clear();
-        AnchorPane load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/homePage/foodManage.fxml")));
+        AnchorPane load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/homePage/donationPage.fxml")));
         middlePane.getChildren().add(load);
     }
 }

@@ -9,9 +9,9 @@
       <Pane prefHeight="90.0" prefWidth="1200.0" style="-fx-background-color: black;">
          <children>
             <Button layoutX="972.0" layoutY="22.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="167.0" style="-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;" text="Logout" />
-            <Button layoutX="173.0" layoutY="21.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="84.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Track Foods" />
+            <Button layoutX="173.0" layoutY="21.0" mnemonicParsing="false" onAction="#donationOnAction" prefHeight="45.0" prefWidth="93.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Donation" />
             <Button fx:id="foodManageBtn" layoutX="69.0" layoutY="21.0" mnemonicParsing="false" onAction="#foodManageOnAction" prefHeight="45.0" prefWidth="93.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Food Manage" />
-            <Button layoutX="268.0" layoutY="21.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="105.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Deliver Manage" />
+            <Button layoutX="276.0" layoutY="21.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="105.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Track Foods" />
          </children>
       </Pane>
       <AnchorPane fx:id="middlePane" layoutY="79.0" prefHeight="669.0" prefWidth="1200.0" />
