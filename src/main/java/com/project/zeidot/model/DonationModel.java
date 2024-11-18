@@ -36,11 +36,12 @@ public class DonationModel {
 
     public boolean saveDonation(DonationDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
-        String query = "INSERT INTO donation values(? , ? , ?)";
+        String query = "INSERT INTO donation values(? , ? , ?, ?)";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, dto.getDonationID());
         ps.setString(2 , dto.getDonationName());
         ps.setString(3 , dto.getFoodBatchID());
+        ps.setString(4 , dto.getFoodBankID());
         int rows = ps.executeUpdate();
         return rows > 0;
     }
@@ -70,7 +71,8 @@ public class DonationModel {
             DonationDto donationDto = new DonationDto(
                     rst.getString(1),
                     rst.getString(2),
-                    rst.getString(3)
+                    rst.getString(3),
+                    rst.getString(4)
             );
             donationDtos.add(donationDto);
         }

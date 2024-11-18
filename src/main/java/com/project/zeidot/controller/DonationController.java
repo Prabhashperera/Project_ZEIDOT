@@ -2,7 +2,6 @@ package com.project.zeidot.controller;
 
 import com.project.zeidot.controller.popups.FoodBatchSelectController;
 import com.project.zeidot.dto.DonationDto;
-import com.project.zeidot.dto.FoodBatchDto;
 import com.project.zeidot.dto.FoodDto;
 import com.project.zeidot.model.DonationModel;
 import com.project.zeidot.model.popups.FoodBatchSelectModel;
@@ -30,12 +29,15 @@ public class DonationController implements Initializable {
     public Label donationIDTF;
     public Button batchIDTF;
     public static String clickedFoodBatchID;
+    public Button foodBankID;
     @FXML
     private TableColumn<FoodDto, String> DonationID;
     @FXML
     private TableColumn<FoodDto, String> DonationName;
     @FXML
     private TableColumn<FoodDto, String> FoodBatchID;
+    @FXML
+    private TableColumn<FoodDto, Integer> FoodBankID;
     @FXML
     private TableView<DonationDto> tableView;
     DonationModel donationModel = new DonationModel();
@@ -46,6 +48,7 @@ public class DonationController implements Initializable {
         DonationID.setCellValueFactory(new PropertyValueFactory<>("DonationID"));
         DonationName.setCellValueFactory(new PropertyValueFactory<>("DonationName"));
         FoodBatchID.setCellValueFactory(new PropertyValueFactory<>("FoodBatchID"));
+        FoodBankID.setCellValueFactory(new PropertyValueFactory<>("FoodBankID"));
         try {
             loadDonationTable();
             loadNextDonationID();
@@ -56,7 +59,7 @@ public class DonationController implements Initializable {
 
     public void foodBatchOnAction(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/homePage/foodBatchSelect.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/homePage/popups/foodBatchSelect.fxml"));
         Parent root = loader.load();
 
         // Pass this DonationController instance to FoodBatchSelectController
@@ -70,10 +73,11 @@ public class DonationController implements Initializable {
 
     public void saveBtnOnAction(ActionEvent event) {
         try {
+            String foodBankID = FoodBankID.getText();
             String donationID = donationIDTF.getText();
             String donationName = donationNameTF.getText();
             String foodBatchID = batchIDTF.getText();
-            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID);
+            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID , foodBankID);
             boolean isSaved = donationModel.saveDonation(dto);
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION , "Donation Saved Successfully!!!").show();
@@ -108,10 +112,11 @@ public class DonationController implements Initializable {
     }
     public void updateBtnOnAction(ActionEvent event) {
         try {
+            String foodBankID = FoodBankID.getText();
             String donationID = donationIDTF.getText();
             String donationName = donationNameTF.getText();
             String foodBatchID = batchIDTF.getText();
-            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID);
+            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID , foodBankID);
             boolean isUpdated = donationModel.updateDonation(dto);
             if (isUpdated) {
                 //This line doing change the current selected batch into available Food Batch Again
@@ -155,7 +160,8 @@ public class DonationController implements Initializable {
                 DonationDto donationTM = new DonationDto(
                         donationDto.getDonationID(),
                         donationDto.getDonationName(),
-                        donationDto.getFoodBatchID()
+                        donationDto.getFoodBatchID(),
+                        donationDto.getFoodBankID()
                 );
                 observableBatchDTOS.add(donationTM);
             }
@@ -180,5 +186,13 @@ public class DonationController implements Initializable {
         clickedFoodBatchID = dto.getFoodBatchID();
         System.out.println(clickedFoodBatchID); // When Clicked to Table, this static var is initilaizing
         //to the table FoodBatch ID, this is for Tracking selected FoodBatchID
+    }
+
+    public void foodBankOnAcion(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        Parent root = FXMLLoader.load(getClass().getResource("/view/homePage/popups/foodBankSelect.fxml"));
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
     }
 }

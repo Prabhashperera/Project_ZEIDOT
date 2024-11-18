@@ -4,11 +4,21 @@ public class DonationDto {
     private String donationID;
     private String donationName;
     private String foodBatchID;
+    private String foodBankID;
 
-    public DonationDto(String donationID, String donationName, String foodBatchID) {
+    public DonationDto(String donationID, String donationName, String foodBatchID , String foodBankID) {
         this.donationID = donationID;
         this.donationName = donationName;
         this.foodBatchID = foodBatchID;
+        this.foodBankID = foodBankID;
+    }
+
+    public String getFoodBankID() {
+        return foodBankID;
+    }
+
+    public void setFoodBankID(String foodBankID) {
+        this.foodBankID = foodBankID;
     }
 
     public String getDonationID() {

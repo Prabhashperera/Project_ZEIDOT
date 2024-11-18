@@ -37,4 +37,10 @@ public class MainLayoutController implements Initializable {
         AnchorPane load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/homePage/donationPage.fxml")));
         middlePane.getChildren().add(load);
     }
+
+    public void foodBankOnAction(ActionEvent event) throws IOException {
+        middlePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/homePage/foodBank/foodBank.fxml")));
+        middlePane.getChildren().add(load);
+    }
 }

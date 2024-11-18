@@ -25,24 +25,25 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <Button fx:id="batchIDTF" layoutX="238.0" layoutY="247.0" mnemonicParsing="false" onAction="#foodBatchOnAction" prefHeight="34.0" prefWidth="98.0" style="-fx-background-color: #003049; -fx-text-fill: white; -fx-font-weight: bold;" text="Select Batch" />
-      <Label layoutX="119.0" layoutY="254.0" text="Food Batch ID">
+      <Button fx:id="batchIDTF" layoutX="261.0" layoutY="247.0" mnemonicParsing="false" onAction="#foodBatchOnAction" prefHeight="34.0" prefWidth="98.0" style="-fx-background-color: #003049; -fx-text-fill: white; -fx-font-weight: bold;" text="Select Batch" />
+      <Label layoutX="119.0" layoutY="254.0" text="Select Batch &amp; Bank">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <TextField fx:id="donationNameTF" layoutX="238.0" layoutY="203.0" prefHeight="27.0" prefWidth="249.0" style="-fx-background-color: edf2f4; -fx-border-color: black; -fx-border-width: 0 0 1px 0;" />
-      <Button layoutX="721.0" layoutY="304.0" mnemonicParsing="false" onAction="#saveBtnOnAction" prefHeight="42.0" prefWidth="110.0" style="-fx-background-color: #006161; -fx-text-fill: white; -fx-font-weight: bold;" text="Save" />
-      <Button layoutX="721.0" layoutY="360.0" mnemonicParsing="false" onAction="#updateBtnOnAction" prefHeight="42.0" prefWidth="110.0" style="-fx-background-color: #001861; -fx-text-fill: white; -fx-font-weight: bold;" text="Update" />
-      <Button layoutX="721.0" layoutY="415.0" mnemonicParsing="false" onAction="#deleteBtnOnAction" prefHeight="42.0" prefWidth="110.0" style="-fx-background-color: #E60000; -fx-text-fill: white; -fx-font-weight: bold;" text="Delete" />
-      <TableView fx:id="tableView" layoutX="118.0" layoutY="304.0" onMouseClicked="#onTableAction" prefHeight="414.0" prefWidth="566.0">
+      <Button layoutX="569.0" layoutY="155.0" mnemonicParsing="false" onAction="#saveBtnOnAction" prefHeight="34.0" prefWidth="110.0" style="-fx-background-color: #006161; -fx-text-fill: white; -fx-font-weight: bold;" text="Save" />
+      <Button layoutX="569.0" layoutY="198.0" mnemonicParsing="false" onAction="#updateBtnOnAction" prefHeight="34.0" prefWidth="110.0" style="-fx-background-color: #001861; -fx-text-fill: white; -fx-font-weight: bold;" text="Update" />
+      <Button layoutX="569.0" layoutY="243.0" mnemonicParsing="false" onAction="#deleteBtnOnAction" prefHeight="34.0" prefWidth="110.0" style="-fx-background-color: #E60000; -fx-text-fill: white; -fx-font-weight: bold;" text="Delete" />
+      <TableView fx:id="tableView" layoutX="115.0" layoutY="304.0" onMouseClicked="#onTableAction" prefHeight="414.0" prefWidth="566.0">
         <columns>
           <TableColumn fx:id="DonationID" prefWidth="88.79998779296875" text="DonationID" />
           <TableColumn fx:id="DonationName" prefWidth="237.60003662109375" text="Donation Name" />
             <TableColumn fx:id="FoodBatchID" prefWidth="117.60002441406249" text="Food Batch ID" />
-            <TableColumn fx:id="FoodBatchID1" prefWidth="117.60002441406249" text="Food Bank ID" />
+            <TableColumn fx:id="FoodBankID" prefWidth="117.60002441406249" text="Food Bank ID" />
         </columns>
       </TableView>
       <Label fx:id="donationIDTF" layoutX="239.0" layoutY="176.0" prefHeight="18.0" prefWidth="110.0" text="ID" />
+      <Button fx:id="foodBankID" layoutX="378.0" layoutY="247.0" mnemonicParsing="false" onAction="#foodBankOnAcion" prefHeight="34.0" prefWidth="98.0" style="-fx-background-color: #003049; -fx-text-fill: white; -fx-font-weight: bold;" text="Food Bank" />
    </children>
 </AnchorPane>
