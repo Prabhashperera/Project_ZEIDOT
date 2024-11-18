@@ -1,5 +1,6 @@
 package com.project.zeidot.controller;
 
+import com.project.zeidot.controller.popups.FoodBankSelectController;
 import com.project.zeidot.controller.popups.FoodBatchSelectController;
 import com.project.zeidot.dto.DonationDto;
 import com.project.zeidot.dto.FoodDto;
@@ -57,27 +58,13 @@ public class DonationController implements Initializable {
         }
     }
 
-    public void foodBatchOnAction(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/homePage/popups/foodBatchSelect.fxml"));
-        Parent root = loader.load();
-
-        // Pass this DonationController instance to FoodBatchSelectController
-        FoodBatchSelectController fbSelectController = loader.getController();
-        fbSelectController.setDonationController(this);
-
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    } //Food Batch Selection BUtton Method
-
     public void saveBtnOnAction(ActionEvent event) {
         try {
-            String foodBankID = FoodBankID.getText();
+            String foodBankIDx = foodBankID.getText();
             String donationID = donationIDTF.getText();
             String donationName = donationNameTF.getText();
             String foodBatchID = batchIDTF.getText();
-            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID , foodBankID);
+            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID , foodBankIDx);
             boolean isSaved = donationModel.saveDonation(dto);
             if (isSaved) {
                 new Alert(Alert.AlertType.CONFIRMATION , "Donation Saved Successfully!!!").show();
@@ -143,6 +130,11 @@ public class DonationController implements Initializable {
         System.out.println(selectedBatchID);
         batchIDTF.setText(selectedBatchID);
     } //Batch ID set to the Button
+    public void bankIDInit(String selectedBatchID) {
+        System.out.println(selectedBatchID);
+        foodBankID.setText(selectedBatchID);
+    } //Bank ID set to the Button
+
 
     public void loadNextDonationID() throws SQLException {
         String donationID = donationModel.getNextDonationId();
@@ -174,6 +166,7 @@ public class DonationController implements Initializable {
     public void refreshPage() throws SQLException {
         loadDonationTable();
         loadNextDonationID();
+        foodBankID.setText("Food Bank");
         batchIDTF.setText("Select Batch");
         donationNameTF.setText("");
     } //Refresh After Saving or Deleting table data
@@ -188,11 +181,33 @@ public class DonationController implements Initializable {
         //to the table FoodBatch ID, this is for Tracking selected FoodBatchID
     }
 
+
+    //POPUPS okkomaaaaaaaaaaaaaaaaaaaaaaaaa
     public void foodBankOnAcion(ActionEvent event) throws IOException {
         Stage stage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("/view/homePage/popups/foodBankSelect.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/homePage/popups/foodBankSelect.fxml"));
+        // Load the root node from the FXML
+        Parent root = loader.load();
+        // Access the controller
+        FoodBankSelectController foodBankSelectController = loader.getController();
+        foodBankSelectController.setDonationController(this);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
+    public void foodBatchOnAction(ActionEvent event) throws IOException {
+        Stage stage = new Stage();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/homePage/popups/foodBatchSelect.fxml"));
+        Parent root = loader.load();
+
+        // Pass this DonationController instance to FoodBatchSelectController
+        FoodBatchSelectController fbSelectController = loader.getController();
+        fbSelectController.setDonationController(this);
+        //////////////////////////////////////////////////////////
+
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    } //Food Batch Selection BUtton Method
 }
