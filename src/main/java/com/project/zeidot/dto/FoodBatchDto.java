@@ -5,9 +5,17 @@ public class FoodBatchDto {
     private String foodAmount;
     private String date;
     private String isAvailable;
+    private String duration;
 
     public FoodBatchDto() {
 
+    }
+    public FoodBatchDto(String foodBatchId, String foodAmount, String date, String isAvailable, String duration) {
+        this.foodBatchId = foodBatchId;
+        this.foodAmount = foodAmount;
+        this.date = date;
+        this.isAvailable = isAvailable;
+        this.duration = duration;
     }
 
     public String getFoodBatchId() {
@@ -47,5 +55,13 @@ public class FoodBatchDto {
 
     public void setIsAvailable(String isAvailable) {
         this.isAvailable = isAvailable;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }

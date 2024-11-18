@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,6 +47,7 @@ public class FoodManageController implements Initializable {
     @FXML
     private Label currentTimeLabel;// Current Time showing Label - only for showing
     LocalDateTime currentDateTime = LocalDateTime.now(); //Current Time - This is for database saving
+    LocalTime currentTime = LocalTime.now();
 
     //Food Table - Table Columns
     @FXML
@@ -99,6 +101,22 @@ public class FoodManageController implements Initializable {
         }
     }
 
+    public void refreshPage() throws SQLException {
+        loadNextCustomerId();
+        currentDate();
+        loadTableFood();
+        loadFoodBatchTable();
+        foodNameTF.setText("");
+        foodWeightTF.setText("");
+        menuButton.setText("Hour");
+    }
+
+    public void loadNextCustomerId() throws SQLException {
+        String nextFoodId = foodManageModel.getNextCustomerId();
+        System.out.println(nextFoodId);
+        foodIDTF.setText(nextFoodId);
+    } //Generating NextFoodID & set FoodID Text
+
     public void saveBtnOnAction(ActionEvent event) {
         try {
 //            String batchID = foodBatchModel.getNextBatchId();
@@ -120,7 +138,12 @@ public class FoodManageController implements Initializable {
                 boolean isAdded = foodBatchModel.setBatchDetailsValues(detailsDto);
                 if (isAdded) {
                     System.out.println("Batch Details Added : " + detailsDto.getFoodID() + ", " + detailsDto.getBatchId());
-                    amountUpdate(foodWeight); //If Food & Batch Detail Added Successfully, Must be Increase the Amount
+                    amountUpdate(foodWeight);//If Food & Batch Detail Added Successfully, Must be Increase the Amount
+                    LocalTime newTime = foodBatchModel.checkTime(LocalTime.parse(foodDuration), batchID.getText());
+                    boolean isTimeUpdated = foodBatchModel.updateFoodBatchTime(newTime, batchID.getText());
+                    if (isTimeUpdated) {
+                        System.out.println("Time eka hari");
+                    }
                     refreshPage();
                 }
             } else {
@@ -130,22 +153,41 @@ public class FoodManageController implements Initializable {
             System.out.println(e.getMessage());
         }
     }
-
-    public void refreshPage() throws SQLException {
-        loadNextCustomerId();
-        currentDate();
-        loadTableFood();
-        loadFoodBatchTable();
-        foodNameTF.setText("");
-        foodWeightTF.setText("");
-        menuButton.setText("Hour");
+    public void deleteOnAction(ActionEvent event) {
+        try {
+            FoodDto food = tableView.getSelectionModel().getSelectedItem();
+            String foodID = food.getFoodID();
+            boolean isDeleted = foodManageModel.deleteFood(foodID);
+            if (isDeleted) {
+                new Alert(Alert.AlertType.INFORMATION, "Deleted", ButtonType.OK).show();
+                //After Deleting a Food emediately calling Decrease amount of the food batch
+                boolean isSaved = foodManageModel.decreaseAmount(foodManageModel.getCurrentWeight(batchID.getText()), Double.parseDouble(foodWeightTF.getText()));
+                if (isSaved) {
+                    System.out.println("Okooooooooooooooooma hari");
+                    refreshPage();
+                }
+                refreshPage();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-
-    public void loadNextCustomerId() throws SQLException {
-        String nextFoodId = foodManageModel.getNextCustomerId();
-        System.out.println(nextFoodId);
-        foodIDTF.setText(nextFoodId);
-    } //Generating NextFoodID & set FoodID Text
+    public void editOnAction(ActionEvent event) {
+        try {
+            String foodID = foodIDTF.getText();
+            String foodName = foodNameTF.getText();
+            String foodWeight = foodWeightTF.getText();
+            String foodDuration = menuButton.getText();
+            FoodDto dto = new FoodDto(foodID, foodName, foodWeight, foodDuration);
+            boolean isUpdated = foodManageModel.updateFood(dto);
+            if (isUpdated) {
+                new Alert(Alert.AlertType.INFORMATION, "Updated", ButtonType.OK).show();
+                refreshPage();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void setHour(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
@@ -166,7 +208,6 @@ public class FoodManageController implements Initializable {
 
         tableView.setItems(FoodObsList);
     }
-
     public void loadFoodBatchTable() throws SQLException {
         try {
             ArrayList<FoodBatchDto> batchDTOS = foodBatchModel.getAllBatchDetails(); // Renamed to batchDTOS
@@ -189,42 +230,6 @@ public class FoodManageController implements Initializable {
     }
 
     //Delete On Action
-    public void deleteOnAction(ActionEvent event) {
-        try {
-            FoodDto food = tableView.getSelectionModel().getSelectedItem();
-            String foodID = food.getFoodID();
-            boolean isDeleted = foodManageModel.deleteFood(foodID);
-            if (isDeleted) {
-                new Alert(Alert.AlertType.INFORMATION, "Deleted", ButtonType.OK).show();
-                //After Deleting a Food emediately calling Decrease amount of the food batch
-                boolean isSaved = foodManageModel.decreaseAmount(foodManageModel.getCurrentWeight(batchID.getText()), Double.parseDouble(foodWeightTF.getText()));
-                if (isSaved) {
-                    System.out.println("Okooooooooooooooooma hari");
-                    refreshPage();
-                }
-                refreshPage();
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    public void editOnAction(ActionEvent event) {
-        try {
-            String foodID = foodIDTF.getText();
-            String foodName = foodNameTF.getText();
-            String foodWeight = foodWeightTF.getText();
-            String foodDuration = menuButton.getText();
-            FoodDto dto = new FoodDto(foodID, foodName, foodWeight, foodDuration);
-            boolean isUpdated = foodManageModel.updateFood(dto);
-            if (isUpdated) {
-                new Alert(Alert.AlertType.INFORMATION, "Updated", ButtonType.OK).show();
-                refreshPage();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void tableOnAction(MouseEvent tableViewSortEvent) {
         FoodDto selectedItem = tableView.getSelectionModel().getSelectedItem();
@@ -300,5 +305,22 @@ public class FoodManageController implements Initializable {
             System.out.println("okkoma Hari");
         }
     } //Food ekak add weddi eke weight eka akthu wenaw
-                                                                          //food amount ekata food Batch eke
+
+    //food amount ekata food Batch eke
+
+    public void deleteBatchOnAction(ActionEvent event) {
+        try {
+            FoodBatchDto selectedItem = foodBatchTable.getSelectionModel().getSelectedItem();
+            foodBatchModel.deleteFoodsOfDeletedBatch(selectedItem.getFoodBatchId());
+            boolean isBatchDeleted = foodBatchModel.deleteBatch(selectedItem.getFoodBatchId());
+            if (isBatchDeleted) {
+                new Alert(Alert.AlertType.CONFIRMATION, "FoodBatch Deleted").showAndWait();
+                refreshPage();
+                System.out.println("okkoma Hari batch deeleteddddd");
+            }
+        }catch (Exception e) {
+            e.getMessage();
+        }
+    } //Batch eka delete weddi wenna ona dewal methods tika
+
 }

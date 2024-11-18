@@ -24,6 +24,7 @@ public class FoodBatchSelectModel {
             dto.setFoodAmount(rs.getString(2));
             dto.setDate(rs.getString(3));
             dto.setIsAvailable(rs.getString(4));
+            dto.setDuration(rs.getString(5));
             detailList.add(dto);
         }
         return detailList;

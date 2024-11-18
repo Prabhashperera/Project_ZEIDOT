@@ -34,14 +34,17 @@ public class FoodBatchSelectController implements Initializable {
     private TableColumn<FoodBatchDto, String> FBDate;
     @FXML
     private TableColumn<FoodBatchDto, String> isAvailable;
+    @FXML
+    private TableColumn<FoodBatchDto , String>  duration;
     FoodBatchSelectModel foodBatchSelectModel = new FoodBatchSelectModel(); //Model
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         FBID.setCellValueFactory(new PropertyValueFactory<>("foodBatchId"));
-        FoodAmount.setCellValueFactory(new PropertyValueFactory<>("FoodAmount"));
+        FoodAmount.setCellValueFactory(new PropertyValueFactory<>("foodAmount"));
         FBDate.setCellValueFactory(new PropertyValueFactory<>("date"));
         isAvailable.setCellValueFactory(new PropertyValueFactory<>("isAvailable"));
+        duration.setCellValueFactory(new PropertyValueFactory<>("duration"));
         try {
             loadTable();
         } catch (SQLException e) {

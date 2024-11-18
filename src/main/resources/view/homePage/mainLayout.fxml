@@ -6,14 +6,15 @@
 
 <AnchorPane prefHeight="750.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.MainLayoutController">
    <children>
-      <Pane prefHeight="90.0" prefWidth="1200.0" style="-fx-background-color: black;">
+      <AnchorPane fx:id="middlePane" layoutX="152.0" prefHeight="750.0" prefWidth="894.0" />
+      <Pane id="sidePain" prefHeight="750.0" prefWidth="154.0" styleClass="sidePane" stylesheets="@../Css/mainCss.css">
          <children>
-            <Button layoutX="972.0" layoutY="22.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="167.0" style="-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;" text="Logout" />
-            <Button layoutX="173.0" layoutY="21.0" mnemonicParsing="false" onAction="#donationOnAction" prefHeight="45.0" prefWidth="93.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Donation" />
-            <Button fx:id="foodManageBtn" layoutX="69.0" layoutY="21.0" mnemonicParsing="false" onAction="#foodManageOnAction" prefHeight="45.0" prefWidth="93.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Food Manage" />
-            <Button layoutX="276.0" layoutY="21.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="105.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Track Foods" />
+            <Button layoutX="-7.0" layoutY="195.0" mnemonicParsing="false" onAction="#donationOnAction" prefHeight="55.0" prefWidth="161.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Donation" />
+            <Button id="buttonSide" fx:id="foodManageBtn" layoutY="114.0" mnemonicParsing="false" onAction="#foodManageOnAction" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" styleClass="buttonSide" stylesheets="@../Css/mainCss.css" text="Food Manage" />
+            <Button layoutY="277.0" mnemonicParsing="false" onAction="#foodBankOnAction" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Food Banks" />
+            <Button layoutY="358.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Delivery" />
+            <Button layoutY="438.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="154.0" style="-fx-background-color: #5218fa; -fx-text-fill: white; -fx-font-weight: bold;" text="Alerts" />
          </children>
       </Pane>
-      <AnchorPane fx:id="middlePane" layoutY="79.0" prefHeight="669.0" prefWidth="1200.0" />
    </children>
 </AnchorPane>

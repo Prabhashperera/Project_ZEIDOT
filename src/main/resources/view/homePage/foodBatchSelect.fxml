@@ -8,26 +8,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="450.0" prefWidth="557.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.popups.FoodBatchSelectController">
+<AnchorPane prefHeight="450.0" prefWidth="741.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.popups.FoodBatchSelectController">
    <children>
-      <Label layoutX="154.0" layoutY="21.0" text="Select FoodBatch">
+      <Label layoutX="297.0" layoutY="20.0" text="Select FoodBatch">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Label>
-      <TableView fx:id="tableView" layoutX="26.0" layoutY="63.0" prefHeight="307.0" prefWidth="499.0" stylesheets="@../Css/mainCss.css">
+      <TableView fx:id="tableView" layoutX="67.0" layoutY="63.0" prefHeight="307.0" prefWidth="598.0" stylesheets="@../Css/mainCss.css">
         <columns>
           <TableColumn fx:id="FBID" prefWidth="94.39999389648438" text="FBID" />
-          <TableColumn fx:id="FoodAmount" prefWidth="199.20001220703125" text="Food Amount" />
-            <TableColumn fx:id="FBDate" prefWidth="100.79998779296875" text="Date" />
-            <TableColumn fx:id="isAvailable" prefWidth="100.79998779296875" text="IsAvailable" />
+          <TableColumn fx:id="FoodAmount" prefWidth="118.39996337890625" text="Food Amount" />
+            <TableColumn fx:id="FBDate" prefWidth="166.39996337890625" text="Date" />
+            <TableColumn fx:id="isAvailable" prefWidth="98.40005493164062" text="IsAvailable" />
+            <TableColumn fx:id="duration" prefWidth="122.39996337890625" text="Expire Time" />
         </columns>
       </TableView>
-      <Button layoutX="423.0" layoutY="388.0" mnemonicParsing="false" onAction="#selectBtnOnAction" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: blue; -fx-text-fill: white; -fx-font-weight: bold;" text="Select">
+      <Button layoutX="559.0" layoutY="388.0" mnemonicParsing="false" onAction="#selectBtnOnAction" prefHeight="36.0" prefWidth="94.0" style="-fx-background-color: blue; -fx-text-fill: white; -fx-font-weight: bold;" text="Select">
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label layoutX="64.0" layoutY="397.0" prefHeight="18.0" prefWidth="299.0" text="PROJECT ZEIDOT ------------------------------------&gt;" />
+      <Label layoutX="107.0" layoutY="397.0" prefHeight="18.0" prefWidth="425.0" text="PROJECT ZEIDOT -----------------------------------------------------------------&gt;" />
    </children>
 </AnchorPane>

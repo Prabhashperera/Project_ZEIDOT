@@ -63,3 +63,22 @@
 
 
  /* Buttons */
+
+ .buttonSide {
+     padding: 10px 20px;
+     font-size: 16px;
+     border: none;
+     border-radius: 5px;
+     background-color: #2e2eff; /* Green */
+     color: white;
+     cursor: pointer;
+     transition: box-shadow 0.3s ease;
+ }
+
+ .buttonSide:hover {
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow on hover */
+ }
+
+ .sidePane {
+     -fx-background-color: linear-gradient(to right, #001861, #00008b);
+ }
