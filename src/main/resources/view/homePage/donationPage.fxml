@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1046.0" style="-fx-background-color: edf2f4;" stylesheets="@../Css/mainCss.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.DonationController">
+<AnchorPane id="mainPane" prefHeight="750.0" prefWidth="1046.0" styleClass="mainPane" stylesheets="@../Css/mainCss.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.DonationController">
    <children>
-      <Label layoutX="480.0" layoutY="35.0" text="DONATIONS">
+      <Label layoutX="258.0" layoutY="47.0" text="DONATIONS">
          <font>
             <Font name="System Bold" size="40.0" />
          </font>
@@ -31,19 +31,25 @@
             <Font size="14.0" />
          </font>
       </Label>
-      <TextField fx:id="donationNameTF" layoutX="238.0" layoutY="203.0" prefHeight="27.0" prefWidth="249.0" style="-fx-background-color: edf2f4; -fx-border-color: black; -fx-border-width: 0 0 1px 0;" />
+      <TextField fx:id="donationNameTF" layoutX="238.0" layoutY="203.0" prefHeight="27.0" prefWidth="249.0" promptText="Birthday Party" style="-fx-background-color: edf2f4; -fx-border-color: black; -fx-border-width: 0 0 1px 0;" />
       <Button layoutX="569.0" layoutY="155.0" mnemonicParsing="false" onAction="#saveBtnOnAction" prefHeight="34.0" prefWidth="110.0" style="-fx-background-color: #006161; -fx-text-fill: white; -fx-font-weight: bold;" text="Save" />
       <Button layoutX="569.0" layoutY="198.0" mnemonicParsing="false" onAction="#updateBtnOnAction" prefHeight="34.0" prefWidth="110.0" style="-fx-background-color: #001861; -fx-text-fill: white; -fx-font-weight: bold;" text="Update" />
       <Button layoutX="569.0" layoutY="243.0" mnemonicParsing="false" onAction="#deleteBtnOnAction" prefHeight="34.0" prefWidth="110.0" style="-fx-background-color: #E60000; -fx-text-fill: white; -fx-font-weight: bold;" text="Delete" />
-      <TableView fx:id="tableView" layoutX="115.0" layoutY="304.0" onMouseClicked="#onTableAction" prefHeight="414.0" prefWidth="566.0">
+      <TableView id="tableView" fx:id="tableView" layoutX="41.0" layoutY="304.0" onMouseClicked="#onTableAction" prefHeight="414.0" prefWidth="640.0" styleClass="tableView" stylesheets="@../Css/mainCss.css">
         <columns>
-          <TableColumn fx:id="DonationID" prefWidth="88.79998779296875" text="DonationID" />
-          <TableColumn fx:id="DonationName" prefWidth="237.60003662109375" text="Donation Name" />
-            <TableColumn fx:id="FoodBatchID" prefWidth="117.60002441406249" text="Food Batch ID" />
-            <TableColumn fx:id="FoodBankID" prefWidth="117.60002441406249" text="Food Bank ID" />
+          <TableColumn fx:id="DonationID" prefWidth="99.19998168945312" text="DonationID" />
+          <TableColumn fx:id="DonationName" prefWidth="243.1999969482422" text="Donation Name" />
+            <TableColumn fx:id="FoodBatchID" prefWidth="143.20001220703125" text="Food Batch ID" />
+            <TableColumn fx:id="FoodBankID" prefWidth="152.800048828125" text="Food Bank ID" />
         </columns>
       </TableView>
       <Label fx:id="donationIDTF" layoutX="239.0" layoutY="176.0" prefHeight="18.0" prefWidth="110.0" text="ID" />
       <Button fx:id="foodBankID" layoutX="378.0" layoutY="247.0" mnemonicParsing="false" onAction="#foodBankOnAcion" prefHeight="34.0" prefWidth="98.0" style="-fx-background-color: #003049; -fx-text-fill: white; -fx-font-weight: bold;" text="Food Bank" />
+      <Label layoutX="716.0" layoutY="132.0" prefHeight="170.0" prefWidth="285.0" text="Hotels generate a significant amount of food waste, with an estimated 25-40% of food prepared daily going uneaten. Donating excess food to those in need can help reduce waste, support local communities, and align with hotels’ corporate social responsibility goals. Here are some strategies for hotels to consider:" textAlignment="CENTER" wrapText="true" />
+      <Label layoutX="808.0" layoutY="123.0" text="Why We Donate ?">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

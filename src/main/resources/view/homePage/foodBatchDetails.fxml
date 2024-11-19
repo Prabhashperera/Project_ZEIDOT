@@ -12,14 +12,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="669.0" prefWidth="1200.0" style="-fx-background-color: white;" stylesheets="@../Css/mainCss.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.FoodBatchDetailsController">
+<AnchorPane prefHeight="750.0" prefWidth="1046.0" style="-fx-background-color: white;" stylesheets="@../Css/mainCss.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.FoodBatchDetailsController">
    <children>
-      <Label layoutX="498.0" layoutY="41.0" text="Batch Details">
+      <Label layoutX="285.0" layoutY="39.0" text="FOOD BATCH DETAILS">
          <font>
             <Font name="System Bold" size="33.0" />
          </font>
       </Label>
-      <TableView fx:id="tableView" layoutX="438.0" layoutY="166.0" prefHeight="468.0" prefWidth="656.0">
+      <TableView fx:id="tableView" layoutX="117.0" layoutY="316.0" prefHeight="406.0" prefWidth="659.0">
         <columns>
           <TableColumn fx:id="foodID" prefWidth="114.39999008178711" text="FoodID" />
           <TableColumn fx:id="foodName" prefWidth="187.2000274658203" text="FoodName" />
@@ -27,18 +27,23 @@
             <TableColumn fx:id="duration" prefWidth="186.4000244140625" text="Expire Time" />
         </columns>
       </TableView>
-      <Label layoutX="132.0" layoutY="164.0" prefHeight="22.0" prefWidth="102.0" text="Search Batch ID :" />
-      <TextField fx:id="batchID" layoutX="131.0" layoutY="190.0" prefHeight="30.0" prefWidth="248.0" promptText=" B001" style="-fx-background-color: edf2f4; -fx-border-color: black; -fx-border-width: 0 0 1 0;" />
-      <Button layoutX="131.0" layoutY="241.0" mnemonicParsing="false" onAction="#searchBtnOnAction" prefHeight="38.0" prefWidth="248.0" style="-fx-background-color: blue; -fx-text-fill: white; -fx-font-weight: bold;" text="Search" />
-      <ImageView fitHeight="257.0" fitWidth="326.0" layoutX="85.0" layoutY="330.0" pickOnBounds="true" preserveRatio="true">
+      <Label layoutX="213.0" layoutY="162.0" prefHeight="22.0" prefWidth="102.0" text="Search Batch ID :" />
+      <TextField fx:id="batchID" layoutX="212.0" layoutY="188.0" prefHeight="30.0" prefWidth="248.0" promptText=" B001" style="-fx-background-color: edf2f4; -fx-border-color: black; -fx-border-width: 0 0 1 0;" />
+      <Button layoutX="212.0" layoutY="239.0" mnemonicParsing="false" onAction="#searchBtnOnAction" prefHeight="38.0" prefWidth="248.0" style="-fx-background-color: blue; -fx-text-fill: white; -fx-font-weight: bold;" text="Search" />
+      <ImageView fitHeight="182.0" fitWidth="275.0" layoutX="522.0" layoutY="127.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/image.png" />
          </image>
       </ImageView>
-      <Label layoutX="170.0" layoutY="574.0" text="PROJECT ZEIDOT">
+      <Label layoutX="395.0" layoutY="82.0" text="PROJECT ZEIDOT">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </Label>
+      <ImageView fitHeight="416.0" fitWidth="200.0" layoutX="810.0" layoutY="385.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/undraw_love_it_heart_dxlp.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -9,60 +9,58 @@
      -fx-text-alignment: center;
  }
 
- /* General TableView styling */
  .table-view {
-     -fx-background-color: white;           /* Table background color */
-     -fx-border-color: #dcdcdc;             /* Light grey border */
-     -fx-border-width: 1px;
-     -fx-table-cell-border-color: #dcdcdc;  /* Cell border color */
+     -fx-border-radius: 10px;
+     -fx-background-color: transparent; /* Keep background transparent */
+     -fx-border-color: transparent; /* Keep border color transparent */
+     -fx-border-width: 1px; /* Ensure there's a minimal border to apply the radius */
+     -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0.5, 0, 0); /* Subtle glass effect */
  }
 
  /* Header styling */
  .table-view .column-header {
-     -fx-background-color:  #003049; /* Green header background */
-     -fx-padding: 30 0 30 0
+     -fx-background-color: linear-gradient(from 0% 0% to 0% 100%,  #003049, #003049); /* Dark gradient for header */
+     -fx-font-size: 14px;                                     /* Modern font size */
+     -fx-text-fill: white;                                    /* Bright white header text */
+     -fx-font-weight: bold;                                   /* Bold header text */
+     -fx-alignment: CENTER;                                   /* Centered header text */
+     -fx-border-color: transparent;                          /* No header borders */
  }
 
- .table-view .column-header .label {
-     -fx-text-fill: white;                  /* Header text color */
-     -fx-font-weight: bold;
-     -fx-padding: 5;
- }
-
- /* Styling for all cells */
+ /* Cell styling */
  .table-view .table-cell {
-     -fx-alignment: CENTER;                 /* Center align cell content */
-     -fx-text-fill: #000000;
-     -fx-background-color: #b3d2ff;
-     -fx-font-size: 11px;
+     /*-fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #5980ff, #285afb); !* Dark gradient for header *!*/
+     -fx-font-size: 12px;                                     /* Modern font size */
+     -fx-background-color: transparent;
+     -fx-text-fill: black;                                    /* Bright white header text */
+     -fx-alignment: CENTER;                                   /* Centered header text */
+     /*-fx-border-color: #0CAFFF;*/
  }
-.desc {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
- /*!* Specific column styles based on fx:id *!*/
- /*#idColumn{*/
- /*    -fx-background-color: #f4f4f4;*/
- /*    !* Light grey background for ID column cells *!*/
- /*}*/
 
- /*#nameColumn {*/
- /*    -fx-background-color: #f4f4f4;*/
- /*    !* Light green background for Name column cells *!*/
- /*}*/
+ /* Hover effect for rows */
+ .table-view .table-row-cell:hover {
+     -fx-background-color: rgba(255, 255, 255, 0.3); /* Frosty highlight when hovering */
+ }
 
- /*#weightColumn{*/
- /*    -fx-background-color: #f4f4f4;*/
- /*    !* Light red background for Weight column cells *!*/
- /*}*/
+ /* Selected row styling */
+ .table-view .table-row-cell:filled:selected {
+     -fx-background-color: rgba(255, 255, 255, 0.4); /* Frosted white for selection */
+     -fx-text-fill: white;                            /* Ensure text is readable */
+     -fx-border-color: transparent;                  /* Clean look with no borders */
+ }
 
- /*#expireDateColumn{*/
- /*    -fx-background-color: #f4f4f4;*/
- /*    !* Light blue background for ExpireDate column cells *!*/
- /*}*/
+ /* Table row separator */
+ .table-view .table-row-cell {
+     -fx-background-insets: 0, 0 0 1 0; /* Spacing for rows */
+     -fx-border-color: rgba(255, 255, 255, 0.1); /* Subtle row dividers */
+ }
 
-
-
- /* Buttons */
+ /* Optional: Blur effect for the glassy look (if JavaFX supports it) */
+ .table-view {
+     -fx-background: transparent;
+     -fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.2), 10, 0.5, 0, 0); /* Frosted blur effect */
+ }
+ /*hhhhhhhhhhhhhhhhhhhh*/
 
  .buttonSide {
      padding: 10px 20px;
@@ -80,5 +78,15 @@
  }
 
  .sidePane {
-     -fx-background-color: linear-gradient(to right, #001861, #00008b);
+     -fx-background-color: linear-gradient(to right, #001861, #1a1ad6);
+ }
+
+ .mainPane {
+     -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, white 30%, #006cd8 70%);
+ }
+
+ .layoutBtn {
+     -fx-text-fill: white;
+     -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, blue 0%, #035aff 80%);
+     -fx-font-weight: bold;
  }

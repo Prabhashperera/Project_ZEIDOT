@@ -58,9 +58,6 @@ public class FoodManageModel {
         // Return default customer ID if no records are found or ID is improperly formatted
         return "F001";
     }
-//    public boolean batchDetailsAdd(String foodID , String batchID) throws SQLException {
-//        Connection con = DBConnection.getInstance().getConnection();
-//    }
 
     public ArrayList<FoodDto> getAllCustomers() throws SQLException {
         ResultSet rst = CrudUtil.execute("select * from food");
@@ -93,7 +90,6 @@ public class FoodManageModel {
         }
         return 0;
     }
-
     public boolean updateAmount(double CurrentWeight , double foodWeight) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
         String query = "UPDATE foodBatch SET FoodAmount = ? WHERE FBId = ?";
@@ -105,8 +101,7 @@ public class FoodManageModel {
         ps.setString(2 , getCurrentBatchID());
         int rows = ps.executeUpdate();
         return rows > 0;
-    }
-
+    } //When Food Saved Increase by count
     public boolean decreaseAmount(double CurrentWeight , double foodWeight) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
         if (CurrentWeight > 0) {
@@ -121,7 +116,49 @@ public class FoodManageModel {
             return rows > 0;
         }
         return false;
+    }//When Deleted a food Decreasing by count
+
+    public void updateAmountWhenUpdate(String weight , String foodID) throws SQLException {
+        double currentFoodWeight = getFoodWeight(foodID); // 40
+        double newWeight = Double.parseDouble(weight); //20
+
+        if (currentFoodWeight > newWeight) {
+            boolean b = decreaseAmountWhenUpdate(currentFoodWeight, newWeight);
+            if (b) {
+                System.out.println("Adu unaaa");
+            }
+        }
+
     }
+    public double getFoodWeight(String foodID) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String query = "SELECT foodWeight FROM food WHERE foodID = ?";
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setString(1, foodID);
+        ps.executeQuery();
+        ResultSet rst = ps.getResultSet();
+        if (rst.next()) {
+            System.out.println(rst.getString(1) + "Current food Weight returned");
+            return Double.parseDouble(rst.getString(1));
+        }
+        return 0;
+    }
+    public boolean decreaseAmountWhenUpdate(double CurrentWeight , double newWight) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        if (CurrentWeight > 0) {
+            String query = "UPDATE foodWeight SET foodWeight = ? WHERE foodID = ?";
+            PreparedStatement ps = connection.prepareStatement(query);
+            double w = CurrentWeight - newWight;
+            String lastWeight = String.valueOf(w);
+            System.out.println(lastWeight);
+            ps.setString(1, lastWeight);
+            ps.setString(2, getCurrentBatchID());
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        }
+        return false;
+    }//When Deleted a food Decreasing by count
+
 
     public String getCurrentBatchID() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT FBId FROM foodBatch ORDER BY FBId DESC LIMIT 1");

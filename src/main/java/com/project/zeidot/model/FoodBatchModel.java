@@ -155,7 +155,7 @@ public class FoodBatchModel {
         ps.setString(2, batchID);
         int rows = ps.executeUpdate();
         return rows > 0;
-    }
+    } //UPdate New Times
     public LocalTime checkTime(LocalTime time, String batchID) throws SQLException {
         Connection conn = DBConnection.getInstance().getConnection();
         LocalTime newTime = time;
@@ -184,7 +184,33 @@ public class FoodBatchModel {
         }
         System.out.println(newTime);
         return newTime;
-    }
+    } //Check to update when Saving an Food
+    public LocalTime checkTimeWhenDeleting(String batchID) throws SQLException {
+        LocalTime newTime = LocalTime.parse("00:00:00");
+        Connection conn = DBConnection.getInstance().getConnection();
+        String query = "SELECT f.duration\n" +
+                "FROM food f\n" +
+                "JOIN foodBatchDetails fbd ON f.FoodID = fbd.FoodID\n" +
+                "WHERE fbd.FBId = ?";
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setString(1,batchID);
+
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            // Parse the `batchDuration` value from the database
+            LocalTime dbBatchDuration = rs.getTime("duration").toLocalTime();
+
+            // Compare the times and update `newDate`
+            if (newTime.isAfter(dbBatchDuration)) {
+            } else {
+                newTime = dbBatchDuration;
+            }
+        }
+        System.out.println(newTime);
+        return newTime;
+    } // Check to Update When Deleting an Food
+
     //Food Batch Expire Time Methods End
 
 

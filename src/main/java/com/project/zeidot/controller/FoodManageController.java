@@ -5,6 +5,7 @@ import com.project.zeidot.dto.BatchDetailsDto;
 import com.project.zeidot.dto.FoodBatchDto;
 import com.project.zeidot.dto.FoodDto;
 import com.project.zeidot.model.FoodBatchModel;
+import com.project.zeidot.model.FoodBatchTimeCheckThreadModel;
 import com.project.zeidot.model.FoodManageModel;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -95,7 +96,8 @@ public class FoodManageController implements Initializable {
             batchID.setText(foodBatchModel.getCurrentBatchID()); // When Food Manage Loading Current Batch ID is Taking and Showing
             realtimeThread(); // Realtime time Showing Method (This is a Thread)
             refreshPage(); // Refresh Page Method
-            loadTableFood(); // Table Data Loading Method
+            loadTableFood();// Table Data Loading Method
+            checkEveryTime();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -160,6 +162,8 @@ public class FoodManageController implements Initializable {
             boolean isDeleted = foodManageModel.deleteFood(foodID);
             if (isDeleted) {
                 new Alert(Alert.AlertType.INFORMATION, "Deleted", ButtonType.OK).show();
+                LocalTime newTime = foodBatchModel.checkTimeWhenDeleting(batchID.getText());
+                foodBatchModel.updateFoodBatchTime(newTime, batchID.getText());
                 //After Deleting a Food emediately calling Decrease amount of the food batch
                 boolean isSaved = foodManageModel.decreaseAmount(foodManageModel.getCurrentWeight(batchID.getText()), Double.parseDouble(foodWeightTF.getText()));
                 if (isSaved) {
@@ -182,6 +186,7 @@ public class FoodManageController implements Initializable {
             boolean isUpdated = foodManageModel.updateFood(dto);
             if (isUpdated) {
                 new Alert(Alert.AlertType.INFORMATION, "Updated", ButtonType.OK).show();
+                foodManageModel.updateAmountWhenUpdate(foodWeight , foodID);
                 refreshPage();
             }
         } catch (SQLException e) {
@@ -280,8 +285,7 @@ public class FoodManageController implements Initializable {
             String nextBatchID = foodBatchModel.getNextBatchId();
             String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
             FoodBatchDto foodBatchDto = new FoodBatchDto(FbatchID , "0" , currentDate , "Available");
-            boolean isSaved = Boolean.parseBoolean(foodBatchModel.setBatchValues(foodBatchDto));
-            System.out.println(isSaved ? "save una" : "unnaha");
+            foodBatchModel.setBatchValues(foodBatchDto);
             batchID.setText(nextBatchID);
         }catch (NullPointerException | SQLException e) {
             e.getMessage();
@@ -305,7 +309,6 @@ public class FoodManageController implements Initializable {
             System.out.println("okkoma Hari");
         }
     } //Food ekak add weddi eke weight eka akthu wenaw
-
     //food amount ekata food Batch eke
 
     public void deleteBatchOnAction(ActionEvent event) {
@@ -322,5 +325,25 @@ public class FoodManageController implements Initializable {
             e.getMessage();
         }
     } //Batch eka delete weddi wenna ona dewal methods tika
+
+    public void checkEveryTime() {
+        FoodBatchTimeCheckThreadModel model = new FoodBatchTimeCheckThreadModel();
+        Thread checkThread = new Thread(() -> {
+            try {
+                while (true) {
+                    boolean isDeleted = model.checkTime();
+                    if (isDeleted) {
+                        refreshPage();
+                        System.out.println("Refreshed");
+                    }
+                    Thread.sleep(60000);
+                }
+            }catch (InterruptedException | SQLException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        checkThread.setDaemon(true);
+        checkThread.start();
+    } //Deleting Expired Batch Sets
 
 }

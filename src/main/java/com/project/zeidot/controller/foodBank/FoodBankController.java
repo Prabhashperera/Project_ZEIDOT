@@ -59,10 +59,10 @@ public class FoodBankController implements Initializable {
     public void saveBtnOnAction(ActionEvent event) {
         try{
             String donationId = FBDonationID.getText();
-            String FBName = FBKName.getText();
+            String FBNames = FBName.getText();
             String FBAddress = FBAddressTF.getText();
             String FBEmail = FBEmailTF.getText();
-            FoodBankDto dto = new FoodBankDto(donationId,FBName,FBAddress,FBEmail);
+            FoodBankDto dto = new FoodBankDto(donationId,FBNames,FBAddress,FBEmail);
             boolean isSaved = fBKModel.saveFoodBank(dto);
             if(isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION , "Saved!!").show();
