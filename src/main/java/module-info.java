@@ -15,4 +15,6 @@ module com.project.zeidot {
     exports com.project.zeidot.controller.popups;
     opens com.project.zeidot.controller.foodBank to javafx.fxml;
     exports com.project.zeidot.controller.foodBank;
+    opens com.project.zeidot.controller.delivery to javafx.fxml;
+    exports com.project.zeidot.controller.delivery;
 }

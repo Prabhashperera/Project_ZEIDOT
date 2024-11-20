@@ -59,17 +59,39 @@ public class FoodBankController implements Initializable {
     public void saveBtnOnAction(ActionEvent event) {
         try{
             String donationId = FBDonationID.getText();
+            // Validate FoodBank Name (FBName)
+            // Must not be empty and must only contain letters and spaces
             String FBNames = FBName.getText();
+            if (FBNames == null || !FBNames.matches("^[A-Za-z ]+$")) {
+                new Alert(Alert.AlertType.ERROR, "Invalid FoodBank Name! It must contain only letters and spaces.", ButtonType.OK).show();
+                return;
+            }
+            // Validate FoodBank Address (FBAddress)
+            // Must not be empty and allows letters, numbers, spaces, and common address symbols (, . - # /)
             String FBAddress = FBAddressTF.getText();
+            if (FBAddress == null || !FBAddress.matches("^[A-Za-z0-9 ,.\\-#/]+$")) {
+                new Alert(Alert.AlertType.ERROR, "Invalid FoodBank Address! It must contain only valid address characters.", ButtonType.OK).show();
+                return;
+            }
+
+            // Validate FoodBank Email (FBEmail)
+            // Must follow a valid email format
             String FBEmail = FBEmailTF.getText();
+            if (FBEmail == null || !FBEmail.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+                new Alert(Alert.AlertType.ERROR, "Invalid FoodBank Email! Please enter a valid email address.", ButtonType.OK).show();
+                return;
+            }
             FoodBankDto dto = new FoodBankDto(donationId,FBNames,FBAddress,FBEmail);
             boolean isSaved = fBKModel.saveFoodBank(dto);
             if(isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION , "Saved!!").show();
                 refreshPage();
+            }else {
+                new Alert(Alert.AlertType.ERROR , "Save Failed!!").show();
+                refreshPage();
             }
-        } catch (Exception e) {
-            e.getMessage();
+        } catch (NullPointerException | SQLException e) {
+            new Alert(Alert.AlertType.ERROR , "Save Failed!!").show();
         }
     }
 

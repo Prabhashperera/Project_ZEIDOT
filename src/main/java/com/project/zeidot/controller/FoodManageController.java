@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class FoodManageController implements Initializable {
+    private Connection conn = null;
     public AnchorPane mainAnchor;
 
     public TextField foodNameTF; //Food Name
@@ -121,59 +122,115 @@ public class FoodManageController implements Initializable {
 
     public void saveBtnOnAction(ActionEvent event) {
         try {
-//            String batchID = foodBatchModel.getNextBatchId();
+            // Input validation Start
             String foodID = foodIDTF.getText();
             String foodName = foodNameTF.getText();
-            String foodWeight = foodWeightTF.getText();
-            //Adding Menu Button Current Value to The Current Time -- (CurrentTime + MenuButton Value)
-            LocalDateTime newDateTime = currentDateTime.plusHours(Long.parseLong(menuButton.getText()));
-            // After adding Plus Hours, Formatting the time into HH:mm Format
-            String foodDuration = newDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
-            FoodDto dto = new FoodDto(foodID, foodName, foodWeight, foodDuration); //F001 , Rice , 20.4 , CurrentTime + PlusHours
-            boolean isSaved = foodManageModel.saveFood(dto);
-            if (isSaved) {
-                refreshPage();
-                new Alert(Alert.AlertType.INFORMATION, "Saved", ButtonType.OK).show();
-                //Pass foodID & CurrentBatch ID into BatchDetails DTO
-                BatchDetailsDto detailsDto = new BatchDetailsDto(foodID , batchID.getText());
-                //Now this is Going to Model that Adding Values to Associate Entity in Database (FoodBatchDetails Table)
-                boolean isAdded = foodBatchModel.setBatchDetailsValues(detailsDto);
-                if (isAdded) {
-                    System.out.println("Batch Details Added : " + detailsDto.getFoodID() + ", " + detailsDto.getBatchId());
-                    amountUpdate(foodWeight);//If Food & Batch Detail Added Successfully, Must be Increase the Amount
-                    LocalTime newTime = foodBatchModel.checkTime(LocalTime.parse(foodDuration), batchID.getText());
-                    boolean isTimeUpdated = foodBatchModel.updateFoodBatchTime(newTime, batchID.getText());
-                    if (isTimeUpdated) {
-                        System.out.println("Time eka hari");
-                    }
-                    refreshPage();
-                }
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Cannot Saved!!", ButtonType.OK).show();
+            if (!foodName.matches("^[A-Za-z ]+$")) {
+                new Alert(Alert.AlertType.ERROR, "Invalid Food Name! Must contain only letters and spaces.", ButtonType.OK).show();
+                return;
             }
+            String foodWeight = foodWeightTF.getText();
+            if (!foodWeight.matches("^\\d+(\\.\\d+)?$")) {
+                new Alert(Alert.AlertType.ERROR, "Invalid Food Weight! Must be a valid number.", ButtonType.OK).show();
+                return;
+            }
+            // Input validation END
+            // Parse and calculate new time (with plus Hours)
+            LocalDateTime newDateTime = currentDateTime.plusHours(Long.parseLong(menuButton.getText()));
+            String foodDuration = newDateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+
+            // Initialize DTOs
+            FoodDto dto = new FoodDto(foodID, foodName, foodWeight, foodDuration); //F001 , Rice , 20.4 , CurrentTime + PlusHours
+            BatchDetailsDto detailsDto = new BatchDetailsDto(foodID , batchID.getText());
+            // Begin transaction
+            conn = DBConnection.getInstance().getConnection();
+            conn.setAutoCommit(false); // Disable auto-commit to manage transactions
+
+            // Save batch details
+            boolean isSaved = foodManageModel.saveFood(dto);
+            if (!isSaved) {
+                conn.rollback(); //if Fails RollBack
+                new Alert(Alert.AlertType.ERROR, "Cannot Saved!!", ButtonType.OK).show();
+                return;
+            }
+
+            //Now this is Going to Model that Adding Values to Associate Entity in Database (FoodBatchDetails Table)
+            boolean isAdded = foodBatchModel.setBatchDetailsValues(detailsDto);
+            if (!isAdded) {
+                conn.rollback();
+                new Alert(Alert.AlertType.ERROR, "Cannot Added FoodBatchDetails!!", ButtonType.OK).show();
+                return;
+            }
+            // Update batch time
+            LocalTime newTime = foodBatchModel.checkTime(LocalTime.parse(foodDuration), batchID.getText());
+            boolean isTimeUpdated = foodBatchModel.updateFoodBatchTime(newTime, batchID.getText());
+                if (!isTimeUpdated) {
+                    conn.rollback();
+                    new Alert(Alert.AlertType.ERROR, "Cannot Updated!!", ButtonType.OK).show();
+                    return;
+                }
+            amountUpdate(foodWeight);//If Food & Batch Detail Added Successfully, Must be Increase the Amount
+            conn.commit(); //If all are Passed , Commit
+            //Transaction END
+            new Alert(Alert.AlertType.INFORMATION, "Successfully Saved!!", ButtonType.OK).show();
+            refreshPage();
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true); // Restore default auto-commit behavior
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error resetting auto-commit: " + ex.getMessage());
+            }
         }
     }
     public void deleteOnAction(ActionEvent event) {
         try {
             FoodDto food = tableView.getSelectionModel().getSelectedItem();
             String foodID = food.getFoodID();
+            //Transaction Start
+            conn = DBConnection.getInstance().getConnection();
+            conn.setAutoCommit(false);
+            //Deleting FoodID
             boolean isDeleted = foodManageModel.deleteFood(foodID);
-            if (isDeleted) {
-                new Alert(Alert.AlertType.INFORMATION, "Deleted", ButtonType.OK).show();
-                LocalTime newTime = foodBatchModel.checkTimeWhenDeleting(batchID.getText());
-                foodBatchModel.updateFoodBatchTime(newTime, batchID.getText());
-                //After Deleting a Food emediately calling Decrease amount of the food batch
-                boolean isSaved = foodManageModel.decreaseAmount(foodManageModel.getCurrentWeight(batchID.getText()), Double.parseDouble(foodWeightTF.getText()));
-                if (isSaved) {
-                    System.out.println("Okooooooooooooooooma hari");
-                    refreshPage();
-                }
-                refreshPage();
+            if (!isDeleted) {
+                conn.rollback();
+                new Alert(Alert.AlertType.ERROR, "Cannot Deleted!!", ButtonType.OK).show();
+                return;
             }
+            //When deleting a Food / Time must change if its the Main time that Holds FoodBatch Expire time
+            LocalTime newTime = foodBatchModel.checkTimeWhenDeleting(batchID.getText());
+            foodBatchModel.updateFoodBatchTime(newTime, batchID.getText());
+            //After Deleting a Food emediately calling Decrease amount of the food batch
+            boolean isDecrease = foodManageModel.decreaseAmount(foodManageModel.getCurrentWeight(batchID.getText()), Double.parseDouble(foodWeightTF.getText()));
+            if (!isDecrease) {
+                conn.rollback();
+                new Alert(Alert.AlertType.ERROR, "Cannot Deleted!!", ButtonType.OK).show();
+                return;
+            }
+            conn.commit();
+            new Alert(Alert.AlertType.INFORMATION, "Successfully Deleted!!", ButtonType.OK).show();
+            refreshPage();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            try {
+                if (conn != null) {
+                    conn.rollback(); // Roll back any partial operations on error
+                }
+            } catch (SQLException rollbackEx) {
+                System.out.println("Rollback Error: " + rollbackEx.getMessage());
+            }
+        }finally {
+            try {
+                if (conn != null) {
+                    conn.setAutoCommit(true); // Restore default auto-commit behavior
+                }
+            } catch (SQLException ex) {
+                System.out.println("Error resetting auto-commit: " + ex.getMessage());
+            }
         }
     }
     public void editOnAction(ActionEvent event) {

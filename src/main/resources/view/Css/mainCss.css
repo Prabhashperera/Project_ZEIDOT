@@ -20,7 +20,7 @@
  /* Header styling */
  .table-view .column-header {
      -fx-background-color: linear-gradient(from 0% 0% to 0% 100%,  #003049, #003049); /* Dark gradient for header */
-     -fx-font-size: 14px;                                     /* Modern font size */
+     -fx-font-size: 13px;                                     /* Modern font size */
      -fx-text-fill: white;                                    /* Bright white header text */
      -fx-font-weight: bold;                                   /* Bold header text */
      -fx-alignment: CENTER;                                   /* Centered header text */

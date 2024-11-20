@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="450.0" prefWidth="639.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.zeidot.controller.popups.FoodBankSelectController">
    <children>
       <Label layoutX="247.0" layoutY="29.0" text="Select FoodBatch">
@@ -29,6 +28,6 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label layoutX="85.0" layoutY="407.0" prefHeight="18.0" prefWidth="425.0" text="PROJECT ZEIDOT -------------------------------------------------&gt;" />
+      <Label layoutX="85.0" layoutY="407.0" prefHeight="18.0" prefWidth="355.0" text="PROJECT ZEIDOT -------------------------------------------------&gt;" />
    </children>
 </AnchorPane>

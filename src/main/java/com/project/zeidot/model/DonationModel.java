@@ -36,12 +36,13 @@ public class DonationModel {
 
     public boolean saveDonation(DonationDto dto) throws SQLException {
         Connection connection = DBConnection.getInstance().getConnection();
-        String query = "INSERT INTO donation values(? , ? , ?, ?)";
+        String query = "INSERT INTO donation values(? , ? , ?, ? , ?)";
         PreparedStatement ps = connection.prepareStatement(query);
         ps.setString(1, dto.getDonationID());
         ps.setString(2 , dto.getDonationName());
-        ps.setString(3 , dto.getFoodBatchID());
+        ps.setString(3 , dto.getFBId());
         ps.setString(4 , dto.getFoodBankID());
+        ps.setString(5 , "NO");
         int rows = ps.executeUpdate();
         return rows > 0;
     }
@@ -56,7 +57,7 @@ public class DonationModel {
         String query = "Update donation SET donationName = ? , FBId = ? WHERE donationID = ?";
         PreparedStatement ps = conn.prepareStatement(query);
         ps.setString(1 , dto.getDonationName());
-        ps.setString(2 , dto.getFoodBatchID());
+        ps.setString(2 , dto.getFBId());
         ps.setString(3 , dto.getDonationID());
         int rows = ps.executeUpdate();
         return rows > 0;

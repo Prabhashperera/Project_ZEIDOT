@@ -2,6 +2,7 @@ package com.project.zeidot.controller;
 
 import com.project.zeidot.controller.popups.FoodBankSelectController;
 import com.project.zeidot.controller.popups.FoodBatchSelectController;
+import com.project.zeidot.db.DBConnection;
 import com.project.zeidot.dto.DonationDto;
 import com.project.zeidot.dto.FoodDto;
 import com.project.zeidot.model.DonationModel;
@@ -21,11 +22,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class DonationController implements Initializable {
+    private Connection conn =null;
     public TextField donationNameTF;
     public Label donationIDTF;
     public Button batchIDTF;
@@ -48,7 +51,7 @@ public class DonationController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         DonationID.setCellValueFactory(new PropertyValueFactory<>("DonationID"));
         DonationName.setCellValueFactory(new PropertyValueFactory<>("DonationName"));
-        FoodBatchID.setCellValueFactory(new PropertyValueFactory<>("FoodBatchID"));
+        FoodBatchID.setCellValueFactory(new PropertyValueFactory<>("FBId"));
         FoodBankID.setCellValueFactory(new PropertyValueFactory<>("FoodBankID"));
         try {
             loadDonationTable();
@@ -62,23 +65,49 @@ public class DonationController implements Initializable {
         try {
             String foodBankIDx = foodBankID.getText();
             String donationID = donationIDTF.getText();
+            // Validate Donation Name (e.g., must contain letters and spaces)
             String donationName = donationNameTF.getText();
-            String foodBatchID = batchIDTF.getText();
-            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID , foodBankIDx);
-            boolean isSaved = donationModel.saveDonation(dto);
-            if (isSaved) {
-                new Alert(Alert.AlertType.CONFIRMATION , "Donation Saved Successfully!!!").show();
-                boolean isUpdated = foodBatchSelectModel.changeAvailability(foodBatchID);
-                if (isUpdated) {
-                    System.out.println("uppp");
-                }
-                refreshPage();
-            }else {
-                new Alert(Alert.AlertType.ERROR , "Donation Saved Failed!!!").show();
+            if (donationName == null || !donationName.matches("^[A-Za-z ]+$")) {
+                new Alert(Alert.AlertType.ERROR, "Invalid Donation Name! Must contain only letters and spaces.", ButtonType.OK).show();
+                return;
             }
+            String foodBatchID = batchIDTF.getText();
+            //Transaction Start
+            conn = DBConnection.getInstance().getConnection();
+            conn.setAutoCommit(false);
+            //Pass Data to Dto
+            DonationDto dto = new DonationDto(donationID, donationName, foodBatchID , foodBankIDx);
+            boolean isSaved = donationModel.saveDonation(dto); //Save Donation
+            if (!isSaved) {
+                conn.rollback();
+                new Alert(Alert.AlertType.ERROR, "Failed to save Donation", ButtonType.OK).show();
+                return;
+            }
+            boolean isUpdated = foodBatchSelectModel.changeAvailability(foodBatchID);
+            if (!isUpdated) {
+                conn.rollback();
+                new Alert(Alert.AlertType.ERROR, "Failed to Update Availability Donation", ButtonType.OK).show();
+                return;
+            }
+            conn.commit();
+            new Alert(Alert.AlertType.CONFIRMATION , "Donation Saved Successfully!!!").show();
+            refreshPage();
         }catch (Exception e){
-            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                new Alert(Alert.AlertType.ERROR, "Failed to Rollback Donation", ButtonType.OK).show();
+            }
+        }finally {
+            try {
+               if (conn != null) {
+                   conn.setAutoCommit(true);
+               }
+            } catch (SQLException e) {
+                new Alert(Alert.AlertType.ERROR , "Failed to close connection", ButtonType.OK).show();
+            }
         }
+
     } //Save Button
     public void deleteBtnOnAction(ActionEvent event) {
         DonationDto dto = tableView.getSelectionModel().getSelectedItem();
@@ -152,7 +181,7 @@ public class DonationController implements Initializable {
                 DonationDto donationTM = new DonationDto(
                         donationDto.getDonationID(),
                         donationDto.getDonationName(),
-                        donationDto.getFoodBatchID(),
+                        donationDto.getFBId(),
                         donationDto.getFoodBankID()
                 );
                 observableBatchDTOS.add(donationTM);
@@ -175,8 +204,8 @@ public class DonationController implements Initializable {
         DonationDto dto = tableView.getSelectionModel().getSelectedItem();
         donationIDTF.setText(dto.getDonationID());
         donationNameTF.setText(dto.getDonationName());
-        batchIDTF.setText(dto.getFoodBatchID());
-        clickedFoodBatchID = dto.getFoodBatchID();
+        batchIDTF.setText(dto.getFBId());
+        clickedFoodBatchID = dto.getFoodBankID();
         System.out.println(clickedFoodBatchID); // When Clicked to Table, this static var is initilaizing
         //to the table FoodBatch ID, this is for Tracking selected FoodBatchID
     }
