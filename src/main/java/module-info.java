@@ -4,6 +4,10 @@ module com.project.zeidot {
     requires java.sql;
     requires mysql.connector.j;
     requires net.sf.jasperreports.core;
+    requires jdk.httpserver;
+    requires jakarta.mail;
+    requires jakarta.activation;
+    requires java.base;
 
     opens com.project.zeidot to javafx.fxml;
     opens com.project.zeidot.controller to javafx.fxml;
@@ -17,4 +21,6 @@ module com.project.zeidot {
     exports com.project.zeidot.controller.foodBank;
     opens com.project.zeidot.controller.delivery to javafx.fxml;
     exports com.project.zeidot.controller.delivery;
+    opens com.project.zeidot.controller.mail to javafx.fxml;
+    exports com.project.zeidot.controller.mail;
 }

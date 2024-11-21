@@ -16,6 +16,10 @@ public class FoodBankDto {
     public FoodBankDto() {
 
     }
+    public FoodBankDto(String FBName,String FBKEmail) {
+        this.FBKName = FBKName;
+        this.FBKEmail = FBKEmail;
+    }
 
     public void setFBKId(String FBKId) {
         this.FBKId = FBKId;

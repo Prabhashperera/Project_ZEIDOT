@@ -25,11 +25,56 @@
       <artifactId>jasperreports</artifactId>
       <version>7.0.1</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+    <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+    <!-- JavaMail API -->
+
+    <!-- Jakarta Mail -->
+    <!-- https://mvnrepository.com/artifact/org.eclipse.angus/angus-mail -->
+    <dependency>
+      <groupId>org.eclipse.angus</groupId>
+      <artifactId>angus-mail</artifactId>
+      <version>2.0.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.activation</groupId>
+      <artifactId>jakarta.activation</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>jakarta.mail</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.activation</groupId>
+      <artifactId>activation</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
+    <!-- Jakarta Activation -->
+    <dependency>
+      <groupId>jakarta.activation</groupId>
+      <artifactId>jakarta.activation-api</artifactId>
+      <version>2.1.1</version>
+    </dependency>
+
+
+
+
+
+
+
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-controls</artifactId>
       <version>17.0.6</version>
     </dependency>
+
+
+
     <dependency>
       <groupId>org.openjfx</groupId>
       <artifactId>javafx-fxml</artifactId>

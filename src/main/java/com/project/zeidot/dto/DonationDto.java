@@ -16,6 +16,7 @@ public class DonationDto {
     public DonationDto() {
     }
 
+
     // Getters and Setters
     public String getDonationID() {
         return donationID;

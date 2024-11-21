@@ -89,4 +89,10 @@ public class MainLayoutController implements Initializable {
             alert.showAndWait();
         }
     }
+
+    public void sendMailOnAction(ActionEvent event) throws IOException {
+        middlePane.getChildren().clear();
+        AnchorPane load = FXMLLoader.load(getClass().getResource("/view/homePage/mail/sendMailPage.fxml"));
+        middlePane.getChildren().add(load);
+    }
 }
