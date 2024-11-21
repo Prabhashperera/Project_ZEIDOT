@@ -38,9 +38,9 @@
          </cursor>
       </TextField>
       <Label fx:id="FBDonationID" layoutX="293.0" layoutY="155.0" text="Donation ID" />
-      <TableView fx:id="tableView" layoutX="30.0" layoutY="311.0" prefHeight="394.0" prefWidth="750.0">
+      <TableView fx:id="tableView" layoutX="30.0" layoutY="311.0" onMouseClicked="#tableOnMouseClickedAction" prefHeight="394.0" prefWidth="750.0">
          <columns>
-            <TableColumn fx:id="donationID" prefWidth="103.2" text="Donation ID" />
+            <TableColumn fx:id="donationID" prefWidth="103.2" text="FoodBankID" />
             <TableColumn fx:id="FBKName" prefWidth="197.6" text="Food Bank Name" />
             <TableColumn fx:id="FBKAddress" prefWidth="222.4" text="Food Bank Address" />
             <TableColumn fx:id="FBKEmail" prefWidth="222.4" text="Email Address" />

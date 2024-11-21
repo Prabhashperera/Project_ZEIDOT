@@ -3,7 +3,7 @@ module com.project.zeidot {
     requires javafx.fxml;
     requires java.sql;
     requires mysql.connector.j;
-
+    requires net.sf.jasperreports.core;
 
     opens com.project.zeidot to javafx.fxml;
     opens com.project.zeidot.controller to javafx.fxml;

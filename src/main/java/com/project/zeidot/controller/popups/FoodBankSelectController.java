@@ -2,7 +2,6 @@ package com.project.zeidot.controller.popups;
 
 import com.project.zeidot.controller.DonationController;
 import com.project.zeidot.dto.FoodBankDto;
-import com.project.zeidot.dto.FoodBatchDto;
 import com.project.zeidot.model.foodBank.FoodBankModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,7 +47,7 @@ public class FoodBankSelectController implements Initializable {
         try {
             FoodBankDto selectedItem = tableView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
-                donationController.bankIDInit(selectedItem.getDonationID());
+                donationController.bankIDInit(selectedItem.getFBKId());
             }
 
         }catch (Exception e){

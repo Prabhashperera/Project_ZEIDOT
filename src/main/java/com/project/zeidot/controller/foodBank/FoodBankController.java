@@ -1,7 +1,6 @@
 package com.project.zeidot.controller.foodBank;
 
 import com.project.zeidot.dto.FoodBankDto;
-import com.project.zeidot.dto.FoodBatchDto;
 import com.project.zeidot.model.foodBank.FoodBankModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -35,7 +35,7 @@ public class FoodBankController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        donationID.setCellValueFactory(new PropertyValueFactory<>("donationID"));
+        donationID.setCellValueFactory(new PropertyValueFactory<>("FBKId"));
         FBKName.setCellValueFactory(new PropertyValueFactory<>("FBKName"));
         FBKAddress.setCellValueFactory(new PropertyValueFactory<>("FBKAddress"));
         FBKEmail.setCellValueFactory(new PropertyValueFactory<>("FBKEmail"));
@@ -81,7 +81,7 @@ public class FoodBankController implements Initializable {
                 new Alert(Alert.AlertType.ERROR, "Invalid FoodBank Email! Please enter a valid email address.", ButtonType.OK).show();
                 return;
             }
-            FoodBankDto dto = new FoodBankDto(donationId,FBNames,FBAddress,FBEmail);
+            FoodBankDto dto = new FoodBankDto(donationId,FBAddress, FBNames,FBEmail);
             boolean isSaved = fBKModel.saveFoodBank(dto);
             if(isSaved){
                 new Alert(Alert.AlertType.CONFIRMATION , "Saved!!").show();
@@ -94,10 +94,37 @@ public class FoodBankController implements Initializable {
             new Alert(Alert.AlertType.ERROR , "Save Failed!!").show();
         }
     }
-
-    public void editOnAction(ActionEvent event) {
+    public void editOnAction(ActionEvent event) throws SQLException {
+        try {
+            if (tableView.getSelectionModel().getSelectedItem() != null) {
+                String FBKId = FBDonationID.getText();
+                String FBAddress = FBAddressTF.getText();
+                String FBName = FBKName.getText();
+                String FBEmail = FBEmailTF.getText();
+                FoodBankDto dto = new FoodBankDto(FBKId,FBAddress,FBName,FBEmail);
+                boolean isUpdated = fBKModel.editFoodBank(dto);
+                if(isUpdated){
+                    refreshPage();
+                    new Alert(Alert.AlertType.CONFIRMATION , "Updated!!").show();
+                }
+            }
+        }catch (Exception e) {
+            System.out.println("null Selected Row");
+        }
     }
     public void deleteOnAction(ActionEvent event) {
+        if (tableView.getSelectionModel().getSelectedItem() != null) {
+            try {
+                FoodBankDto selectedItem = tableView.getSelectionModel().getSelectedItem();
+                boolean isDeleted = fBKModel.deleteFoodBank(selectedItem.getFBKId());
+                if(isDeleted){
+                    new Alert(Alert.AlertType.CONFIRMATION , "Deleted!!").show();
+                    refreshPage();
+                }
+            }catch(Exception e) {
+                new Alert(Alert.AlertType.ERROR , "Delete Failed!!").show();
+            }
+        }
     }
 
     //Table Methods
@@ -109,4 +136,13 @@ public class FoodBankController implements Initializable {
         tableView.setItems(observableList);
     }
 
+    public void tableOnMouseClickedAction(MouseEvent mouseEvent) {
+        FoodBankDto selectedItem = tableView.getSelectionModel().getSelectedItem();
+        if (selectedItem != null) {
+            FBDonationID.setText(selectedItem.getFBKId());
+            FBName.setText(selectedItem.getFBKName());
+            FBAddressTF.setText(selectedItem.getFBKAddress());
+            FBEmailTF.setText(selectedItem.getFBKEmail());
+        }
+    }
 }

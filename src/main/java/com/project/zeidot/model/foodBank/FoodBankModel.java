@@ -1,9 +1,7 @@
 package com.project.zeidot.model.foodBank;
 
 import com.project.zeidot.db.DBConnection;
-import com.project.zeidot.dto.DonationDto;
 import com.project.zeidot.dto.FoodBankDto;
-import com.project.zeidot.dto.FoodBatchDto;
 import com.project.zeidot.util.CrudUtil;
 
 import java.sql.Connection;
@@ -17,7 +15,7 @@ public class FoodBankModel {
         Connection connection = DBConnection.getInstance().getConnection();
         String query = "INSERT INTO foodBank  values(? , ? , ? , ?)";
         PreparedStatement ps = connection.prepareStatement(query);
-        ps.setString(1, dto.getDonationID());
+        ps.setString(1, dto.getFBKId());
         ps.setString(2 , dto.getFBKName());
         ps.setString(3 , dto.getFBKAddress());
         ps.setString(4 , dto.getFBKEmail());
@@ -25,6 +23,26 @@ public class FoodBankModel {
         int rows = ps.executeUpdate();
         return rows > 0;
     }
+    public boolean deleteFoodBank(String FBKId) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String query = "DELETE FROM foodBank WHERE foodBankID = ?";
+        PreparedStatement ps = connection.prepareStatement(query);
+        ps.setString(1, FBKId);
+        int rows = ps.executeUpdate();
+        return rows > 0;
+    }
+    public boolean editFoodBank(FoodBankDto dto) throws SQLException {
+        Connection connection = DBConnection.getInstance().getConnection();
+        String sql = "UPDATE foodBank SET address = ?, FBName = ?, emailAddress = ? WHERE foodBankID = ?";
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ps.setString(1, dto.getFBKAddress());
+        ps.setString(2 , dto.getFBKName());
+        ps.setString(3 , dto.getFBKEmail());
+        ps.setString(4 , dto.getFBKId());
+        int rows = ps.executeUpdate();
+        return rows > 0;
+    }
+
     public String getNextFoodBankId() throws SQLException {
         ResultSet rs = CrudUtil.execute("SELECT FoodBankID FROM foodBank ORDER BY FoodBankID DESC LIMIT 1");
 
@@ -56,9 +74,9 @@ public class FoodBankModel {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             FoodBankDto dto = new FoodBankDto();
-            dto.setDonationID(rs.getString(1));
-            dto.setFBKName(rs.getString(2));
-            dto.setFBKAddress(rs.getString(3));
+            dto.setFBKId(rs.getString(1));
+            dto.setFBKAddress(rs.getString(2));
+            dto.setFBKName(rs.getString(3));
             dto.setFBKEmail(rs.getString(4));
             detailList.add(dto);
         }

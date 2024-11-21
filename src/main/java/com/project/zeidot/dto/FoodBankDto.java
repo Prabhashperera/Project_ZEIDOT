@@ -1,13 +1,13 @@
 package com.project.zeidot.dto;
 
 public class FoodBankDto {
-    private String donationID;
+    private String FBKId;
     private String FBKName;
     private String FBKAddress;
     private String FBKEmail;
 
-    public FoodBankDto(String donationID, String FBKName, String FBKAddress, String FBKEmail) {
-        this.donationID = donationID;
+    public FoodBankDto(String FBKId, String FBKAddress, String FBKName, String FBKEmail) {
+        this.FBKId = FBKId;
         this.FBKName = FBKName;
         this.FBKAddress = FBKAddress;
         this.FBKEmail = FBKEmail;
@@ -17,12 +17,8 @@ public class FoodBankDto {
 
     }
 
-    public String getDonationID() {
-        return donationID;
-    }
-
-    public void setDonationID(String donationID) {
-        this.donationID = donationID;
+    public void setFBKId(String FBKId) {
+        this.FBKId = FBKId;
     }
 
     public String getFBKName() {
@@ -47,5 +43,9 @@ public class FoodBankDto {
 
     public void setFBKEmail(String FBKEmail) {
         this.FBKEmail = FBKEmail;
+    }
+
+    public String getFBKId() {
+        return FBKId;
     }
 }

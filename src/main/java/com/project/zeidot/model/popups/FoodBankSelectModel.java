@@ -2,7 +2,6 @@ package com.project.zeidot.model.popups;
 
 import com.project.zeidot.db.DBConnection;
 import com.project.zeidot.dto.FoodBankDto;
-import com.project.zeidot.dto.FoodBatchDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +19,7 @@ public class FoodBankSelectModel {
         ResultSet rs = ps.executeQuery();
         while (rs.next()) {
             FoodBankDto dto = new FoodBankDto();
-            dto.setDonationID(rs.getString(1));
+            dto.setFBKId(rs.getString(1));
             dto.setFBKName(rs.getString(2));
             dto.setFBKAddress(rs.getString(3));
             dto.setFBKEmail(rs.getString(4));

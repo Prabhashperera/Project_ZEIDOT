@@ -34,7 +34,7 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Button>
-            <Button layoutY="529.0" mnemonicParsing="false" prefHeight="55.0" prefWidth="154.0" styleClass="layoutBtn" stylesheets="@../Css/mainCss.css" text="Generate Report">
+            <Button layoutY="529.0" mnemonicParsing="false" onAction="#generateReportOnAction" prefHeight="55.0" prefWidth="154.0" styleClass="layoutBtn" stylesheets="@../Css/mainCss.css" text="Generate Report">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
