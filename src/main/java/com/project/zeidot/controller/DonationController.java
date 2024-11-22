@@ -205,6 +205,7 @@ public class DonationController implements Initializable {
         donationIDTF.setText(dto.getDonationID());
         donationNameTF.setText(dto.getDonationName());
         batchIDTF.setText(dto.getFBId());
+        foodBankID.setText(dto.getFoodBankID());
         clickedFoodBatchID = dto.getFoodBankID();
         System.out.println(clickedFoodBatchID); // When Clicked to Table, this static var is initilaizing
         //to the table FoodBatch ID, this is for Tracking selected FoodBatchID

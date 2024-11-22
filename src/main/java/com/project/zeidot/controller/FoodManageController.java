@@ -240,10 +240,10 @@ public class FoodManageController implements Initializable {
             String foodWeight = foodWeightTF.getText();
             String foodDuration = menuButton.getText();
             FoodDto dto = new FoodDto(foodID, foodName, foodWeight, foodDuration);
+            foodManageModel.updateAmountWhenUpdate(foodWeight , foodID);
             boolean isUpdated = foodManageModel.updateFood(dto);
             if (isUpdated) {
                 new Alert(Alert.AlertType.INFORMATION, "Updated", ButtonType.OK).show();
-                foodManageModel.updateAmountWhenUpdate(foodWeight , foodID);
                 refreshPage();
             }
         } catch (SQLException e) {

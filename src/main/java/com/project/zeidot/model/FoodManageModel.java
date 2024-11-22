@@ -123,8 +123,8 @@ public class FoodManageModel {
         double newWeight = Double.parseDouble(weight); //20
 
         if (currentFoodWeight > newWeight) {
-            boolean b = decreaseAmountWhenUpdate(currentFoodWeight, newWeight);
-            if (b) {
+            boolean isUpdated = decreaseAmountWhenUpdate(currentFoodWeight, newWeight);
+            if (isUpdated) {
                 System.out.println("Adu unaaa");
             }
         }

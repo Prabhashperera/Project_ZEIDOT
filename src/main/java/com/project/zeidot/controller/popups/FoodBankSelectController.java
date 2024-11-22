@@ -32,7 +32,7 @@ public class FoodBankSelectController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        FoodBankID.setCellValueFactory(new PropertyValueFactory<>("donationID"));
+        FoodBankID.setCellValueFactory(new PropertyValueFactory<>("FBKId"));
         Name.setCellValueFactory(new PropertyValueFactory<>("FBKName"));
         Address.setCellValueFactory(new PropertyValueFactory<>("FBKAddress"));
         Email.setCellValueFactory(new PropertyValueFactory<>("FBKEmail"));
